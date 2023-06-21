@@ -52,7 +52,14 @@ module fsm (input logic pb0, pb1, flag,
 
 
   end
-  assign clear = (state == s0);
+  assign clear = (state == clear || mode_select);
+  assign enable = (state == stopwatch);
+  // assign read = (state == cycle_through);
+  // assign write = (state == save);
+  assign enable_increment = (state == _input);
+  assign enable_decrement = (state == timer);
+  assign output_select [0] = (state == stopwatch); //|| last_time);
+  // assign output_select [1] = (state == cycle_through || wait);
 
   always_ff @ (posedge clk, negedge nrst) begin
     if (~nrst)
