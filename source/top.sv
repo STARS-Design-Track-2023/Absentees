@@ -16,5 +16,4 @@ module top
   input  logic txready, rxready
 );
 
-
 endmodule
