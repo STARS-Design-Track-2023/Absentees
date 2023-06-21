@@ -1,7 +1,6 @@
 module timer (input logic clk, input logic nrst, input logic enable_dec, input logic enable_in, input logic clock_div, input logic lap, input logic clear, output time_up)
 
   logic [2:0] time_next;
-  logic [2:0] time_up;
   
   always_ff @ (posedge clk, negedge nrst) begin
     if (!nrst)
