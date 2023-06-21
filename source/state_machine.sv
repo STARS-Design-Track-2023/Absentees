@@ -1,51 +1,56 @@
-module fsm (input logic pb0, pb1,
+module fsm (input logic pb0, pb1, flag,
             output logic clear, enable, 
             read, write, enable_increment, 
             enable_decrement,
             output logic [1:0] output_select)
-  typedef enum logic [3:0] {s0, s1, s2, s3, s4} state_t;
+  typedef enum logic [4:0] {mode_select, clear, stop_watch, last_time, _input, timer, time_up} state_t;
   logic [2:0] state, next_state;
   always_comb begin
     next_state = state;
     case(state)
-      s0: begin //mode select state 
-        if (pb0) //select stopwatch mode
-            s1; 
-        else if (pb1) //select timer mode 
-            s2; 
-        else //stay in state 
-            s0;
-      end
-      s1: begin //stopwatch mode
-        if (pb1) //lap 
-            s3; 
-        else if (pb0) //stop
-            s4;
+      mode_select: begin
+        if (pb0)
+            clear;
+        else if (pb1)
+            _input;
         else 
-            s1;
+            mode_select;
       end
-      s2: begin
-        if ()
+      clear: stop_watch;
+      stop_watch: begin
+        if (pb0)
+            last_time;
+        else 
+            stop_watch;
+      end
+      last_time: begin
+        if (pb0)
+            mode_select;
+        else
+            last_time;
+      end
+      _input: begin
+        if (pb1)
+            timer;
+        else 
+            _input;
+      end
+      timer: begin
+        if (flag)
+            time_up;
+        else
+            timer;
+      end
+      time_up: begin
+        if (pb0)
+            mode_select;
+        else
+            time_up;
+      end
+
     endcase
 
-    // if (state = s0)begin
-    //     clear = 1; 
-    //     enable = 0;
-    //     read = 0;
-    //     write = 0;
-    //     enable_increment = 0;
-    //     enable_decrement = 0;
-    // end 
-    // else if (state = s1)begin 
-    //     clear = 0; 
-    //     start = 1; 
-    //     stop = 0;
-    // end 
-    // else if (state = s2)begin
-    //     clear = 0;
-    //     start = 0; 
-    //     stop = 1;
-    // end
+
   end
   assign clear = (state == s0);
 
@@ -57,16 +62,3 @@ module fsm (input logic pb0, pb1,
   end
 endmodule
 
-/*
- state: begin
-    if(reset)
-        go somewhere
-    else if(lap)
-        go lap state
-    else if(start / stop)
-        =
-    else 
-        state = state
-end 
-
-*/
