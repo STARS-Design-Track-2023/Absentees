@@ -1,14 +1,25 @@
-module clkdiv (input logic clk, nrst
-               output logic nxt_count, nxt_secpulse, count, pulse, nxt_pulse)
+module clkdiv (input logic clk, nrst,
+               output logic secpulse);
+
+logic [23:0] count;
 always_ff @ (posedge clk, negedge nrst) begin
     if (!nrst) begin 
-        nxt_count = count + 1;
-        nxt_secpulse = 0;
+        count <= 0;
+        secpulse <= 0;
+    end 
+    else begin 
+        
         if (count == 10000000) begin
-            nxt_count = 0;
-            nxt_pulse = 1;
-            pulse = nxt_pulse;
+            count <= 0;
+            secpulse <= 1;
+          
         end
+
+        else begin
+            count <= count + 1;
+            secpulse <=0;
+        end 
+
     end
 end
 
