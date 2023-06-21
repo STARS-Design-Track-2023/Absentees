@@ -1,7 +1,7 @@
 # STARS 2023 Design Final Project
 
 ## Absenties
-* Sydney Hirsh
+* Sydney Hirsch
 * Daniel Reyes
 * Tom Linn
 * Nathan Miller
