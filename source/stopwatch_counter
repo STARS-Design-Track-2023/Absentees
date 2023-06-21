@@ -1,8 +1,9 @@
-module counter (input logic clk, input logic nrst, input logic enable, input logic clear, input logic clock_div, output logic time_out_s, output logic time_out_m)
+module counter (input logic clk, input logic nrst, input logic enable, input logic clear, input logic clock_div, output [12:0]logic time_out)
 
-  logic [2:0] time_next_s;
-  logic [2:0] time_next_m;
-  logic [2:0] minutes;
+  logic [6:0] time_next_s;
+  logic [6:0] time_next_m;
+  logic [6:0] minutes;
+  logic [6:0] time_out_m, time_out_s;
   
   always_ff @ (posedge clk, negedge nrst) begin
     if (!nrst)
@@ -27,6 +28,7 @@ module counter (input logic clk, input logic nrst, input logic enable, input log
       minutes = minutes + 1;
     else
       time_next_m = minutes;
+    time_out = {time_out_m, time_out_s};
   end
 
 endmodule
