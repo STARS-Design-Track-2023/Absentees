@@ -1,28 +1,34 @@
 module timer (input logic clk, input logic nrst, input logic enable_dec, input logic enable_in, input logic clock_div, input logic lap, input logic clear, output time_up)
 
-  logic [2:0] time_next;
+  logic [11:0] count_next, count;
+  logic next_time_up;
   
   always_ff @ (posedge clk, negedge nrst) begin
     if (!nrst)
-      time = 0;
+      count <= 0;
+      time_up <= 0;
     else
-      time = time_next;
+      count <= count_next;
+      time_up <= next_time_up;
   end
 
   always_comb begin
-    if (enable_dec)
-      if (enable_dec && (time == 0))
-        time_up = 1;
+    count_next = count;
+    next_time_up = time_up;
+    if (enable_dec) begin
+      if (enable_dec && (count == 0))
+        next_time_up = 1;
       else
-      time_next = time - clk_div;
-    if else (enable_in)
+      count_next = count - clk_div;
+    end
+    else if (enable_in) begin
       if (lap)
-        time_next = time + 30;
-      else
-        time_next = time - clk_div;
+        count_next = count + 30;
+
+    end
     else if (clear) begin
-      time_next = 0;
-      time_up = 0;
+        count_next = 0;
+        next_time_up = 0;
     end
   end 
 
