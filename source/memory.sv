@@ -1,35 +1,38 @@
-module memory (input logic count, input logic read, input logic write, output logic out)
+module memory (input logic [11:0] count, input logic read, input logic write, output logic out)
 
   logic [4:0] [11:0] mem, next_mem;
-  logic signed [3:0] add, next_add;
+  logic signed [3:0] addr, next_addr;
 
   always_ff @ (posedge clk, negedge nrst) begin
     if (!nrst) begin
-      add <= -1;
+      addr <= -1;
       mem <= 0;
     end
     else begin
-      add <= next_add;
+      addr <= next_addr;
       mem <= next_mem;
     end
   end
 
   always_comb begin
-    next_add = add;
+    next_addr = addr;
     mext_mem = mem;
     if (write) begin
-      next_mem[add] = count;
-      next_add = add + 1;
+	  next_add = add + 1;
+      next_mem[addr] = count;
     end
     if (read) begin
-      if (add == -1) begin
+      if (addr == -1) begin
         next_add = 0;
       end
       else begin
-        next_add = add - 1;
+        next_addr = add - 1;
       end
     end
-    out = mem[add];
+	if(addr != -1)
+    	out = mem[addr];
+	else
+		out = mem[0];
   end
 
 endmodule
