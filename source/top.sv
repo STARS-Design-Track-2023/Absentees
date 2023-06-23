@@ -16,5 +16,9 @@ module top
   input  logic txready, rxready
 );
 
+<<<<<<< HEAD
 
 endmodule
+=======
+endmodule
+>>>>>>> origin/Nate
