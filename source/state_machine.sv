@@ -2,9 +2,14 @@ module fsm (input logic pb0, pb1, flag,
             output logic clear, enable, 
             read, write, enable_increment, 
             enable_decrement,
-            output logic [1:0] output_select)
+            output logic [1:0] output_select); 
+
   typedef enum logic [4:0] {mode_select, clear, stop_watch, last_time, cycle_through, wait, _input, timer, time_up} state_t;
   logic [2:0] state, next_state;
+  
+  
+
+
   always_comb begin
     next_state = state;
     case(state)
