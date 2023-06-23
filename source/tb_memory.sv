@@ -14,6 +14,8 @@ module tb_memory();
     //DUT signals
     logic [11:0] tb_count, tb_out;
     logic tb_read, tb_write;    
+    logic tb_mismatch;
+    logic [11:0] tb_expected_out;
 
     //CLK Gen
     always begin
@@ -21,7 +23,7 @@ module tb_memory();
         #(CLK_PERIOD / 2);
 
         tb_clk = 1;
-        #(CLK_PERIOD / 2)
+        #(CLK_PERIOD / 2);
     end
 
     task reset_dut;
@@ -39,21 +41,30 @@ module tb_memory();
 
 
     end
+    endtask
 
-    logic tb_mismatch;
-    logic tb_expected_out;
+
+
     task check_output;
     begin
-        asset(tb_out == tb_expected_out) begin
-            $display("test num %0d: incorrect output", tb_test_num);
+        if(tb_out == tb_expected_out) begin 
+            $display("test num %0d: correct output", tb_test_num);
         end
-        else 
+        else begin 
+            tb_mismatch = 1;
             $error("test num %0d: incorrect output", tb_test_num);
+        end 
         
+    end
+    endtask
+
+    initial begin 
+        $dumpfile ("dump.vcd");
+        $dumpvars;
     end
 
     //Extentiate DUT
-    memory DUT (.clk(tb_clk), .nrst(tb_n_rst), .read(tb_read), .write(tb_write), .out(tb_out);
+    memory DUT (.clk(tb_clk), .nrst(tb_n_rst), .read(tb_read), .write(tb_write), .out(tb_out), .count(tb_count));
 
     initial begin
         //Initialize input signals
@@ -75,9 +86,10 @@ module tb_memory();
         reset_dut;
         @(negedge tb_clk);
         tb_write = 1;
-        tb_count = 12'd1591;
+        tb_count = 12'd200;
+        @(posedge tb_clk);        
         @(negedge tb_clk);
-        tb_count = 12'd2099;
+        tb_count = 12'd100;
         @(negedge tb_clk);
         tb_write = 0;
 
@@ -86,12 +98,15 @@ module tb_memory();
         
         @(negedge tb_clk);
         tb_read = 0;
-        tb_expected_out = 12'd2099;
+        tb_expected_out = 12'd100;
         check_output;
         #0.25;
         tb_mismatch = 0;
+
+        @(posedge tb_clk);
+        @(posedge tb_clk);
         
-        
+        $finish;
      
 
 
@@ -110,6 +125,4 @@ endmodule
 
 
 
-    end 
 
-endmodule
