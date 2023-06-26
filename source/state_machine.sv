@@ -10,68 +10,68 @@ module fsm (input logic pb0, pb1, flag,
     case(state)
       mode_select: begin
         if (pb0)
-            clear;
+            next_state = clear;
         else if (pb1)
-            _input;
+            next_state = _input;
         else 
-            mode_select;
+            next_state = mode_select;
       end
       clear: stop_watch;
       stop_watch: begin
         if (pb0)
-            last_time;
+            next_state = last_time;
         else if (pb1)
-          save;
+          next_state = save;
         else 
-            stop_watch;
+            next_state = stop_watch;
       end
       save: stop_watch;
       last_time: begin
         if (pb0)
-            cycle_through;
+             next_state = cycle_through;
         else
-            last_time;
+            next_state = last_time;
       end
       cycle_through: wait;
       wait: begin
         if (pb0)
-          mode_select;
+          next_state = mode_select;
         else if (pb1)
-          cycle_through;
+          next_state = cycle_through;
         else
           wait;
       end 
       _input: begin
         if (pb1)
-            timer;
+            next_state = timer;
         else 
-            _input;
+            next_state = _input;
       end
       timer: begin
         if (flag)
-            time_up;
+            next_state = time_up;
         else
-            timer;
+            next_state = timer;
       end
       time_up: begin
         if (pb0)
-            mode_select;
+            next_state = mode_select;
         else
-            time_up;
+            next_state = time_up;
       end
 
     endcase
 
 
   end
-  assign clear = (state == clear || mode_select);
+  assign clear = (state == clear) || (state == mode_select);
   assign enable = (state == stopwatch);
   assign read = (state == cycle_through);
   assign write = (state == save);
   assign enable_increment = (state == _input);
   assign enable_decrement = (state == timer);
-  assign output_select [0] = (state == stopwatch || last_time);
-  assign output_select [1] = (state == cycle_through || wait);
+  assign output_select [0] = (state == stopwatch) || (state == last_time) || (state == timer) || (state == _input);
+  assign output_select [1] = (state == cycle_through) || (state == wait) || (state == timer) || (state == _input);
 
   always_ff @ (posedge clk, negedge nrst) begin
     if (~nrst)
