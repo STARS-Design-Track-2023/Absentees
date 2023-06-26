@@ -7,12 +7,12 @@ module output_sel (
     logic [6:0] sec, min;
     case(output_sel)
     1:time_to_decode = stopwatch;
-    2:begin 
+    2:time_to_decode = mem;
+    3:begin 
         sec = timer % 60;
         min = timer / 60;
-        timer = {min, sec};
+        time_to_decode = {min, sec};
     end 
-    3:
     default:time_to_decode = 0;
     endcase
     
