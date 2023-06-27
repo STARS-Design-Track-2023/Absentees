@@ -16,7 +16,12 @@ module timer (input logic clk, input logic nrst, input logic enable_dec, input l
   always_comb begin
     count_next = cnt;
     next_time_up = time_up;
-    if (enable_dec) begin
+
+    if (clear) begin
+        count_next = 0;
+        next_time_up = 0;
+    end
+    else if (enable_dec) begin
       if (enable_dec && (cnt == 0))
         next_time_up = 1;
       else
@@ -27,10 +32,7 @@ module timer (input logic clk, input logic nrst, input logic enable_dec, input l
         count_next = cnt + 30;
 
     end
-    else if (clear) begin
-        count_next = 0;
-        next_time_up = 0;
-    end
+
     {dummy[5:0], timer_out[5:0]} = cnt % 60;
     {dummy[5:0], timer_out[11:6]} = cnt / 60;    
   end 
