@@ -15,42 +15,44 @@ module top
   output logic txclk, rxclk,
   input  logic txready, rxready
 );
-  logic [11:0]time_to_decode, timer_out, time_out;
-  logic button4;
-  // sync_edge_detect e1 (.clk(hwclk), .nrst(~reset), .async_in(pb[1]), .pos_edge(red));
-  // sync_edge_detect e2 (.clk(hwclk), .nrst(~reset), .async_in(pb[0]), .pos_edge(green));
+//   logic [11:0]time_to_decode, timer_out, time_out;
+//   logic [5:0] out0,out1,out2,out3;
+//   logic button4, button5, edge5, edge4, intermediate5, intermediate4, nrst, clk_div;
+//   logic clear, enable, enable_decrement, enable_increment, read, write, time_up;
+//   logic [1:0] output_select;
+//         assign nrst = ~reset;
+        // always_ff @(posedge hwclk, negedge nrst) begin 
+        // if(!nrst) begin
 
-  // sync_edge_detect test (.clk(hwclk), .nrst(~reset), .async_in(pb[5]), .pos_edge(button4));
-  output_sel out1 (.timer(timer_out), .stopwatch(time_out), .mem(timer_out), .output_select({pb[1], pb[0]}), .time_to_decode(time_to_decode));
-  decoder test1 (.counter_out(time_to_decode), .out0(ss0[6:0]), .out1(ss1[6:0]), .out2(ss2[6:0]), .out3(ss3[6:0])) ;
-  timer t1 (.clk(hwclk), .nrst(~reset), .enable_dec(pb[2]), .enable_in(pb[3]), .clk_div(pb[4]), .lap(pb[5]), .clear(pb[6]), .time_up(blue), .timer_out(timer_out));
-  counter c1 (.clk(hwclk), .nrst(~reset), .enable(pb[2]), .clock_div(pb[4]), .clear(pb[6]), .time_out(time_out));
-  assign {left[5:0], right[5:0]} = time_to_decode;
+        //     intermediate5 <= 0;
+        //     button5 <= 0;
+        //     intermediate4 <= 0;
+        //     button4 <= 0;
+
+        // end else begin
+
+        //     intermediate5 <= pb[5];
+        //     button5 <= intermediate5;
+        //     intermediate4 <= pb[4];
+        //     button4 <= intermediate4;
+
+        // end
+        // end
+ stopwatch s1 (.clk(hwclk), .nrst(~reset), .pb0(pb[0]), .pb1(pb[1]), .out_0(ss0[6:0]), .out_1(ss1[6:0]), .out_2(ss2[6:0]), .out_3(ss3[6:0]));
+//   clkdiv ck (.clk(hwclk), .nrst(~reset), .secpulse(clk_div));
+//   edge_detect test (.clk(hwclk), .nrst(~reset), .async_in(pb[5]), .pos_edge(edge5));
+//   edge_detect testx (.clk(hwclk), .nrst(~reset), .async_in(pb[4]), .pos_edge(edge4));
+//   output_sel o1 (.timer(timer_out), .stopwatch(time_out), .mem(0), .output_select(output_select), .time_to_decode(time_to_decode));
+//   decoder test2 (.counter_out(time_to_decode), .out0(out0), .out1(out1), .out2(out2), .out3(out3));
+//   timer t1 (.clk(hwclk), .nrst(~reset), .enable_dec(enable_decrement), .enable_in(enable_increment), .clk_div(clk_div), .lap(edge5), .clear(clear), .time_up(time_up), .timer_out(timer_out));
+//   counter c1 (.clk(hwclk), .nrst(~reset), .enable(enable), .clock_div(clk_div), .clear(clear), .time_out(time_out));
+//   fsm f1 (.pb0(edge4), .pb1(edge5), .flag(time_up), .clear(clear), .enable(enable), .read(read), .write(write), .enable_increment(enable_increment), .enable_decrement(enable_decrement), .output_select(output_select), .clk(hwclk), .nrst(nrst) );
+//   encode e1 (.binary(out0), .sv_seg(ss0[6:0]));
+//   encode e2 (.binary(out1), .sv_seg(ss1[6:0]));
+//   encode e3 (.binary(out2), .sv_seg(ss2[6:0]));
+//   encode e4 (.binary(out3), .sv_seg(ss3[6:0]));
+//   assign {left[5:0], right[5:0]} = time_to_decode;
+//   assign red = enable;
+//   assign blue = time_up;
 endmodule
 
-
-
-module sync_edge_detect (
-    input logic async_in, clk, nrst,
-    output logic pos_edge
-);
-
-    logic intermediate, sync, edge_signal;
-
-    always_ff @( posedge clk, negedge nrst ) begin : blockName
-        if(!nrst) begin
-            sync <= 0;
-            intermediate <= 0;
-            edge_signal <= 0;
-        end
-        else begin
-            sync <= intermediate;
-            intermediate <= async_in;
-            edge_signal <= sync;
-        end
-    end
-    always_comb begin
-        pos_edge = ~(edge_signal) & sync;
-    end 
-
-endmodule

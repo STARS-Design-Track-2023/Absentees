@@ -4,11 +4,9 @@ module output_sel (
     output logic [11:0] time_to_decode
 );
 
-    logic [5:0] sec, min;
 
     always_comb begin
-    min = 0;
-    sec = 0;
+
     case(output_select)
     1:time_to_decode = stopwatch;
     2:begin 

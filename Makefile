@@ -19,8 +19,8 @@ TOP_FILE         :=
 
 # List internal component/block files here (separate the filenames with spaces)
 # NOTE: YOU WILL NEED TO SET THIS VARIABLE'S VALUE WHEN WORKING WITH HEIRARCHICAL DESIGNS
-COMPONENT_FILES  := sync_edge_detect.sv output_sel.sv decoder.sv timer.sv 
-#  counter.sv
+COMPONENT_FILES  := edge_detect.sv  fsm.sv clkdiv.sv counter.sv output_sel.sv timer.sv decoder.sv stopwatch.sv encode.sv
+#  counter.sv    sync.sv  encode.sv 
 
 # Specify the filepath of the test bench you want to use (ie. tb_top_level.sv)
 # (do not include the source folder in the name)
