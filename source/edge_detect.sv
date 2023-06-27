@@ -9,14 +9,18 @@ module edge_detect (
         if(!nrst) begin
 
             intermediate <= 0;
+            sync <= 0;
+            edge_d <= 0;
 
         end else begin
 
             intermediate <= async_in;
+            sync <= intermediate;
+            edge_d <= sync;
 
         end
     end
 
-    assign pos_edge = ~(intermediate) & async_in;
+    assign pos_edge = ~(edge_d) & sync;
 
 endmodule
