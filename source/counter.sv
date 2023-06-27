@@ -18,10 +18,10 @@ module counter (input logic clk, input logic nrst, input logic enable, input log
   end
 
   always_comb begin
-    next_minutes = 0;
+    next_minutes = minutes;
     time_next_s = time_out_s;
-    if (enable)
-      time_next_s = time_out_s + 1;
+    if (enable & (time_out_s < 60))
+      time_next_s = time_out_s + {5'b0,clock_div};
     else if (clear)
       time_next_s = 0;
     else if (time_out_s == 60) begin

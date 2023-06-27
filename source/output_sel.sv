@@ -9,13 +9,10 @@ module output_sel (
     always_comb begin
     min = 0;
     sec = 0;
-    time_to_decode = 0;
     case(output_select)
     1:time_to_decode = stopwatch;
     2:begin 
-        {time_to_decode[5:0], sec} = timer % 60;
-        {time_to_decode[5:0],min} = timer / 60;
-        time_to_decode = {min, sec};
+        time_to_decode = timer;
     end 
     3: time_to_decode = mem;
     default:time_to_decode = 0;

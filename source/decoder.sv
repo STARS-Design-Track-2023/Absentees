@@ -3,31 +3,29 @@ output logic [6:0] out0, out1, out2, out3
 );
   
   logic [5:0] minute, second;
-  logic [3:0] m1, m0, s1, s0;
-  
+  logic [5:0] m1, m0, s1, s0;
   
   always_comb begin
-    {minute , second} = counter_out;
+    minute = counter_out[11:6];
+    second = counter_out[5:0];
     s1 = 0;
-    s0 = 0;
     m1 = 0;
-    m0 = 0;
-    
+
     if(second > 9) begin
-        {2'b0,s1} = second / 10;
-        {2'b0,s0} = second % 10;
+        s1 = second / 10;
+        s0 = second % 10;
     end
+    
     else
-        s0 = second[3:0]; 
+        s0 = second; 
     
     if(minute > 9) begin
-        {2'b0,m1} = minute / 10;
-        {2'b0,m0} = minute % 10;
+        m1 = minute / 10;
+        m0 = minute % 10;
     end
     else 
-        m0 = minute[3:0];
-    
-
+        m0 = minute;
+  
   end 
     encode x1 (.in(s0), .out(out0));
     encode x2 (.in(s1), .out(out1));
@@ -36,7 +34,7 @@ output logic [6:0] out0, out1, out2, out3
   
 endmodule
 
-module encode (input logic [3:0] in, output logic [6:0] out);
+module encode (input logic [5:0] in, output logic [6:0] out);
   always_comb begin
     case(in)
      0: out = 7'b0111111;

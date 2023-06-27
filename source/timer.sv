@@ -1,8 +1,7 @@
 module timer (input logic clk, input logic nrst, input logic enable_dec, input logic enable_in, input logic clk_div, input logic lap, input logic clear, output logic time_up, output logic [11:0] timer_out);
 
-  logic [11:0] count_next, cnt;
+  logic [11:0] count_next, cnt, dummy;
   logic next_time_up;
-  assign timer_out = cnt;
   always_ff @ (posedge clk, negedge nrst) begin
     if (!nrst) begin
       cnt <= 0;
@@ -32,6 +31,8 @@ module timer (input logic clk, input logic nrst, input logic enable_dec, input l
         count_next = 0;
         next_time_up = 0;
     end
+    {dummy[5:0], timer_out[5:0]} = cnt % 60;
+    {dummy[5:0], timer_out[11:6]} = cnt / 60;    
   end 
 
 endmodule
