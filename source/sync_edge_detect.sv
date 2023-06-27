@@ -3,7 +3,7 @@ module sync_edge_detect (
     output logic pos_edge
 );
 
-    logic intermediate, logic sync, logic edge_signal;
+    logic intermediate, sync, edge_signal;
 
     always_ff @( posedge clk, negedge nrst ) begin : blockName
         if(!nrst) begin

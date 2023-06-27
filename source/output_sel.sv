@@ -1,19 +1,24 @@
 module output_sel (
     input logic [11:0] timer, stopwatch, mem, 
-    input logic [1:0] output_sel,
+    input logic [1:0] output_select,
     output logic [11:0] time_to_decode
 );
 
-    logic [6:0] sec, min;
-    case(output_sel)
+    logic [5:0] sec, min;
+
+    always_comb begin
+    min = 0;
+    sec = 0;
+    time_to_decode = 0;
+    case(output_select)
     1:time_to_decode = stopwatch;
     2:begin 
-        sec = timer % 60;
-        min = timer / 60;
-        timer = {min, sec};
+        {time_to_decode[5:0], sec} = timer % 60;
+        {time_to_decode[5:0],min} = timer / 60;
+        time_to_decode = {min, sec};
     end 
-    3:
+    3: time_to_decode = mem;
     default:time_to_decode = 0;
     endcase
-    
+    end 
 endmodule

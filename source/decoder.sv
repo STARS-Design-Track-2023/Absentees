@@ -1,4 +1,4 @@
-module decoder (input logic [11:0] counter_out, timer_out, 
+module decoder (input logic [11:0] counter_out,
 output logic [6:0] out0, out1, out2, out3
 );
   
@@ -29,10 +29,10 @@ output logic [6:0] out0, out1, out2, out3
     
 
   end 
-    encode x1 (.in(m0), .out(out0));
-    encode x2 (.in(m1), .out(out1));
-    encode x3 (.in(s0), .out(out2));
-    encode x4 (.in(s1), .out(out3));
+    encode x1 (.in(s0), .out(out0));
+    encode x2 (.in(s1), .out(out1));
+    encode x3 (.in(m0), .out(out2));
+    encode x4 (.in(m1), .out(out3));
   
 endmodule
 
