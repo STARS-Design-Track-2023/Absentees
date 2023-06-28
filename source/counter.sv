@@ -35,13 +35,14 @@ module counter (input logic clk, input logic nrst, input logic enable, input log
   end 
 
   always_comb begin
-    time_next_m = time_out_m;
+    time_next_m = time_out_m;    
+    if(clear)
+      time_next_m = 0;
+    
     if(enable) begin
     if (minutes == 1)
       time_next_m = time_out_m + 1;
-    else if(clear)
-      time_next_m = 0;
-    else
+    else 
       time_next_m = time_out_m;
     end
     time_out = {time_out_m, time_out_s};

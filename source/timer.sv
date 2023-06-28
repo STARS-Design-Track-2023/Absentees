@@ -24,17 +24,32 @@ module timer (input logic clk, input logic nrst, input logic enable_dec, input l
     else if (enable_dec) begin
       if (enable_dec && (cnt == 0))
         next_time_up = 1;
-      else
-      count_next = cnt - {11'b0, clk_div};
+      else begin
+        if(cnt[5:0] > 0) begin
+            count_next[5:0] = cnt[5:0] - {5'b0, clk_div};
+        end
+        else if (clk_div)begin
+            count_next[11:6] = cnt[11:6] - 1;
+            count_next[5:0] = 59;
+        end 
+        else 
+            count_next = cnt;
+      end 
     end
     else if (enable_in) begin
       if (lap)
-        count_next = cnt + 30;
+        
+        if(cnt[5:0] >= 30) begin 
+            count_next[5:0] = 0;
+            count_next[11:6] = cnt[11:6] + 1;
+        end 
 
+        else 
+          count_next[5:0] = cnt[5:0] + 30;
+
+    
     end
-
-    {dummy[5:0], timer_out[5:0]} = cnt % 60;
-    {dummy[5:0], timer_out[11:6]} = cnt / 60;    
+    timer_out = cnt;
   end 
 
 endmodule

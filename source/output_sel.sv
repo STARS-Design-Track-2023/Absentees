@@ -9,10 +9,8 @@ module output_sel (
 
     case(output_select)
     1:time_to_decode = stopwatch;
-    2:begin 
-        time_to_decode = timer;
-    end 
-    3: time_to_decode = mem;
+    2:time_to_decode = mem; 
+    3: time_to_decode = timer;
     default:time_to_decode = 0;
     endcase
     end 

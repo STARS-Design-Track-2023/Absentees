@@ -11,7 +11,7 @@ module encode (input logic [5:0] binary, output logic [6:0] sv_seg);
      7: sv_seg = 7'b0000111;
      8: sv_seg = 7'b1111111;
      9: sv_seg = 7'b1101111;
-     default: sv_seg = 'b0;
+     default: sv_seg = 7'b0;
     endcase
   end
 endmodule
