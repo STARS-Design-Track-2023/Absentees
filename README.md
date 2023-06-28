@@ -8,7 +8,7 @@
 * Htet Yan
 
 ## Stopwatch-Timer
-Stopwatch that can store Laptimes and has a timer function
+A clock device that doubles as a stopwatch and a timer. In stopwatch mode, the device can lap up to five values and then display the values to the user. 
 
 ## Pin Layout
 Put all the GPIO pin numbers, i/o/io determination, and labels
