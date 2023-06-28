@@ -50,6 +50,8 @@ module fsm (input logic pb0, pb1, flag,
       timer: begin
         if (flag)
             next_state = time_up;
+        else if (pb0)
+          next_state = clear; 
         else
             next_state = timer;
       end
