@@ -1,14 +1,14 @@
 # STARS 2023 Design Final Project
 
-## [Team Name]
-* [Name]
-* [Name]
-* [Name]
-* [Name]
-* [TA]
+## Absenties
+* Sydney Hirsch
+* Daniel Reyes
+* Tom Linn
+* Nathan Miller
+* Htet Yan
 
-## [Project Name]
-Description of functionality, how to use it, and any supporting equipment required
+## Stopwatch-Timer
+Stopwatch that can store Laptimes and has a timer function
 
 ## Pin Layout
 Put all the GPIO pin numbers, i/o/io determination, and labels
@@ -22,3 +22,4 @@ Include more than just block diagrams, including sub-block diagrams, state-trans
 
 ## Statement from Purdue
 Pending
+
